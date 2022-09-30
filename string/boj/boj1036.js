@@ -10,10 +10,7 @@ readline
   })
   .on("close", function () {
     let N = parseInt(input[0]);
-    let stringList = [];
-    for (let i = 1; i <= N; i++) {
-      stringList.push(input[i]);
-    }
+    let stringList = input.slice(1, N + 1);
     let K = parseInt(input[N + 1]);
     solution(N, stringList, K);
     process.exit();
@@ -46,19 +43,21 @@ const getDistanceFromZs = (stringList) => {
   let distanceFromZs = [];
 
   for (let i = 0; i < stringList.length; i++) {
-    let stringInput = stringList[i];
+    let inputString = stringList[i];
 
-    for (let j = stringInput.length - 1; j >= 0; j--) {
-      let token = stringInput.charAt(j);
+    for (let j = inputString.length - 1; j >= 0; j--) {
+      let token = inputString.charAt(j);
 
       let charDistance = BigInt(
         parseInt(convert36to10fromChar("Z")) -
           parseInt(convert36to10fromChar(token))
       );
       let distance =
-        j === stringInput.length - 1
+        j === inputString.length - 1
           ? charDistance
-          : charDistance * BigInt(36 ** (stringInput.length - 1 - j));
+          : charDistance *
+            BigInt((36).toString()) **
+              BigInt((inputString.length - 1 - j).toString());
 
       let foundIndex = distanceFromZs.findIndex((item) => item[0] === token);
 
