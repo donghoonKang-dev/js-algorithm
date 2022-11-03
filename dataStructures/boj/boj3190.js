@@ -46,6 +46,7 @@ readline
       );
     }
 
+    //풀이 시작
     const horizontal = [-1, 0, 1, 0];
     const vertical = [0, 1, 0, -1];
 
@@ -54,7 +55,7 @@ readline
     let time = 0;
     let isEnd = false;
 
-    while (!isEnd) {
+    while (snake.length) {
       if (directions.has(time)) {
         if (directions.get(time) === "D")
           snakesDirection = (snakesDirection + 1) % 4;
@@ -63,28 +64,20 @@ readline
 
       time += 1;
 
-      let head =
-        board[snake[0][0] + horizontal[snakesDirection]][
-          snake[0][1] + vertical[snakesDirection]
-        ];
+      let snakeX = snake[0][0] + horizontal[snakesDirection];
+      let snakeY = snake[0][1] + vertical[snakesDirection];
+
+      let head = board[snakeX][snakeY];
 
       if (head === 1) break;
       else {
-        snake.unshift([
-          snake[0][0] + horizontal[snakesDirection],
-          snake[0][1] + vertical[snakesDirection],
-        ]);
-        if (head === 2)
-          board[snake[0][0] + horizontal[snakesDirection]][
-            snake[0][1] + vertical[snakesDirection]
-          ] = 0;
-        else {
+        snake.unshift([snakeX, snakeY]);
+
+        if (head === 2) board[snakeX][snakeY] = 0;
+        if (head !== 2) {
           for (let i = snake.length - 1; i >= 1; i--) {
             let [tmpx, tmpy] = snake[i];
-            if (
-              tmpx === snake[0][0] + horizontal[snakesDirection] &&
-              tmpy === snake[0][1] + vertical[snakesDirection]
-            ) {
+            if (tmpx === snakeX && tmpy === snakeY) {
               isEnd = true;
               break;
             }
@@ -92,6 +85,7 @@ readline
           snake.pop();
         }
       }
+      if (isEnd) break;
     }
 
     console.log(time);
