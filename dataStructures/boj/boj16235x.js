@@ -11,6 +11,7 @@ readline
   })
   .on("close", function () {
     let [N, M, K] = input[0].split(" ").map((el) => parseInt(el));
+
     //  추가양분 Board 세팅
     let A = Array.from(Array(N), () => Array(N).fill(0));
     for (let i = 0; i < N; i++) {
@@ -18,6 +19,7 @@ readline
         A[i][j] = parseInt(input[1 + i].split(" ")[j]);
       }
     }
+
     //  나무 Board 세팅 (각 요소 : [나이])
     let trees = Array.from(Array(N), () => Array(N).fill([]));
     for (let i = 0; i < M; i++) {
@@ -42,15 +44,15 @@ readline
         for (let k = 0; k < N; k++) {
           if (trees[j][k].length === 0) continue;
           else if (trees[j][k].length === 1) {
+            //나무가 한 그루일 때
             if (trees[j][k][0] > 0) {
-              //나무가 한 그루일 때
               if (basics[j][k] >= trees[j][k][0]) {
                 //나무가 양분을 먹음
                 basics[j][k] -= trees[j][k][0];
                 trees[j][k][0] += 1;
               } else {
                 //나무가 양분을 먹지 못하고 죽음
-                trees[j][k] -= trees[j][k] * 2;
+                trees[j][k][0] -= trees[j][k][0] * 2;
               }
             }
           } else {
@@ -94,62 +96,14 @@ readline
           else {
             trees[j][k].forEach((tree) => {
               if (tree > 0 && tree % 5 === 0) {
-                if (j === 0) {
-                  if (k === 0) {
-                    setTree(j, k + 1);
-                    setTree(j + 1, k + 1);
-                    setTree(j + 1, k);
-                  } else if (k === N - 1) {
-                    setTree(j, k - 1);
-                    setTree(j + 1, k - 1);
-                    setTree(j + 1, k);
-                  } else {
-                    setTree(j, k - 1);
-                    setTree(j + 1, k - 1);
-                    setTree(j + 1, k);
-                    setTree(j + 1, k + 1);
-                    setTree(j, k + 1);
-                  }
-                } else if (j === N - 1) {
-                  if (k === 0) {
-                    setTree(j - 1, k);
-                    setTree(j - 1, k + 1);
-                    setTree(j, k + 1);
-                  } else if (k === N - 1) {
-                    setTree(j, k - 1);
-                    setTree(j - 1, k - 1);
-                    setTree(j - 1, k);
-                  } else {
-                    setTree(j, k - 1);
-                    setTree(j - 1, k - 1);
-                    setTree(j - 1, k);
-                    setTree(j - 1, k + 1);
-                    setTree(j, k + 1);
-                  }
-                } else {
-                  if (k === 0) {
-                    setTree(j - 1, k);
-                    setTree(j - 1, k + 1);
-                    setTree(j, k + 1);
-                    setTree(j + 1, k + 1);
-                    setTree(j, k + 1);
-                  } else if (k === N - 1) {
-                    setTree(j - 1, k);
-                    setTree(j - 1, k - 1);
-                    setTree(j, k - 1);
-                    setTree(j + 1, k - 1);
-                    setTree(j + 1, k + 1);
-                  } else {
-                    setTree(j - 1, k - 1);
-                    setTree(j - 1, k);
-                    setTree(j - 1, k + 1);
-                    setTree(j, k - 1);
-                    setTree(j, k + 1);
-                    setTree(j + 1, k - 1);
-                    setTree(j + 1, k);
-                    setTree(j + 1, k + 1);
-                  }
-                }
+                if (j > 0 && k > 0) setTree(j - 1, k - 1);
+                if (j > 0) setTree(j - 1, k);
+                if (j > 0 && k < N - 1) setTree(j - 1, k + 1);
+                if (k > 0) setTree(j, k - 1);
+                if (k < N - 1) setTree(j, k + 1);
+                if (j < N - 1 && k > 0) setTree(j + 1, k - 1);
+                if (j < N - 1) setTree(j + 1, k);
+                if (j < N - 1 && k < N - 1) setTree(j + 1, k + 1);
               }
             });
           }
