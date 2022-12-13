@@ -22,24 +22,20 @@ const solution = (n, w, L, trucks) => {
   let tick = 0;
 
   while (doneTrucks.length < n) {
+    tick += 1;
+
+    let comeOut = bridge.shift();
+    if (comeOut !== 0) doneTrucks.push(comeOut);
+
     const sum = bridge.reduce((acc, curr) => acc + curr, 0);
     const count = bridge.filter((item) => item > 0).length;
 
-    tick += 1;
-
-    if (bridge.length > 0) {
-      let comeOut = bridge.shift();
-      if (comeOut !== 0) doneTrucks.push(comeOut);
-    }
-
-    if (sum + trucks[0] < L && count < w) {
+    if (sum + trucks[0] <= L && count <= w) {
       let comeIn = trucks.shift();
       bridge.push(comeIn);
     } else {
       bridge.push(0);
     }
-
-    console.log(bridge);
   }
 
   console.log(tick);
