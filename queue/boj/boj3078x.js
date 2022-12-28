@@ -10,28 +10,41 @@ readline
     input.push(line);
   })
   .on("close", function () {
-    let [N, K] = input[0].split(" ").map((el) => parseInt(el));
-    let list = input.slice(1);
-    solution(N, K, list);
+    let [N, K] = input
+      .shift()
+      .split(" ")
+      .map((el) => parseInt(el));
+    solution(N, K, input);
     process.exit();
   });
 
 const solution = (N, K, list) => {
   let count = 0;
 
-  for (let i = 1; i <= 20; i++) {
-    const filtered = list
-      .map((el, idx) => [el, idx])
-      .filter((el) => el[0].length === i);
+  let map = new Map();
 
-    if (filtered.length <= 1) continue;
+  for (let i = 0; i < N; i++) {
+    if (map.has(list[i].length)) {
+      map.set(list[i].length, map.get(list[i].length).concat(i));
+    } else {
+      map.set(list[i].length, [i]);
+    }
+  }
 
-    let arr = filtered.map((el) => el[1]);
+  for (let i = 2; i <= 20; i++) {
+    if (map.has(i)) {
+      let head = 0;
+      let tail = 1;
 
-    while (arr.length > 1) {
-      const poped = arr.shift();
-      for (const tmp of arr) {
-        if (tmp - poped <= K) count += 1;
+      while (tail > head) {
+        if (map.get(i)[tail] - map.get(i)[head] <= K) {
+          count += 1;
+          if (tail < map.get(i).length - 1) tail += 1;
+          else head += 1;
+        } else {
+          head += 1;
+          tail = head + 1;
+        }
       }
     }
   }
