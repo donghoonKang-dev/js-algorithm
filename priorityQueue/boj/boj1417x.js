@@ -12,7 +12,7 @@ readline
   .on("close", function () {
     let N = parseInt(input.shift());
     let dasom = parseInt(input.shift());
-    let list = input.length !== 0 ? input.map(Number) : [];
+    let list = input.map((el) => parseInt(el));
     solution(N, dasom, list);
     process.exit();
   });
@@ -110,14 +110,7 @@ const solution = (N, dasom, list) => {
   while (maxHeap.getLength() !== 0) {
     let primary = maxHeap.poll();
 
-    if (dasom === primary) {
-      if (maxHeap.peek() && primary >= maxHeap.peek()) {
-        result += 1;
-        dasom += 1;
-        primary -= 1;
-        maxHeap.push(primary);
-      } else break;
-    } else if (dasom < primary) {
+    if (dasom <= primary) {
       result += 1;
       dasom += 1;
       primary -= 1;
