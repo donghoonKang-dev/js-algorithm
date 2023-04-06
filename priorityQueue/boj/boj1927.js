@@ -1,4 +1,22 @@
-class MaxHeap {
+const readline = require("readline").createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let input = [];
+
+readline
+  .on("line", function (line) {
+    input.push(line);
+  })
+  .on("close", function () {
+    let N = parseInt(input.shift());
+    let list = input.map((el) => parseInt(el));
+    solution(N, list);
+    process.exit();
+  });
+
+class MinHeap {
   constructor() {
     this.heap = [];
   }
@@ -37,7 +55,7 @@ class MaxHeap {
       const parentIndex = Math.floor((currentIndex - 1) / 2);
       const parentData = this.heap[parentIndex];
 
-      if (currentData < parentData) break;
+      if (currentData > parentData) break;
 
       this.heap[currentIndex] = parentData;
       currentIndex = parentIndex;
@@ -60,18 +78,35 @@ class MaxHeap {
       const rightChildData =
         rightChildIndex < this.heap.length ? this.heap[rightChildIndex] : null;
 
-      const biggerIndex =
-        rightChildData !== null && rightChildData >= leftChildData
+      const smallerIndex =
+        rightChildData !== null && rightChildData < leftChildData
           ? rightChildIndex
           : leftChildIndex;
-      const biggerData = this.heap[biggerIndex];
+      const smallerData = this.heap[smallerIndex];
 
-      if (currentData >= biggerData) break;
+      if (currentData <= smallerData) break;
 
-      this.heap[currentIndex] = biggerData;
-      currentIndex = biggerIndex;
+      this.heap[currentIndex] = smallerData;
+      currentIndex = smallerIndex;
     }
 
     this.heap[currentIndex] = currentData;
   }
 }
+
+const solution = (N, list) => {
+  let result = [];
+
+  const minHeap = new MinHeap();
+
+  for (const item of list) {
+    if (item === 0) {
+      if (minHeap.isEmpty()) result.push(0);
+      else result.push(minHeap.delete());
+    } else {
+      minHeap.insert(item);
+    }
+  }
+
+  console.log(result.join("\n"));
+};

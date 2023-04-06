@@ -1,3 +1,21 @@
+const readline = require("readline").createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let input = [];
+
+readline
+  .on("line", function (line) {
+    input.push(line);
+  })
+  .on("close", function () {
+    let N = parseInt(input.shift());
+    let list = input.map((el) => parseInt(el));
+    solution(N, list);
+    process.exit();
+  });
+
 class MaxHeap {
   constructor() {
     this.heap = [];
@@ -75,3 +93,20 @@ class MaxHeap {
     this.heap[currentIndex] = currentData;
   }
 }
+
+const solution = (N, list) => {
+  let result = [];
+
+  const maxHeap = new MaxHeap();
+
+  for (const item of list) {
+    if (item === 0) {
+      if (maxHeap.isEmpty()) result.push(0);
+      else result.push(maxHeap.delete());
+    } else {
+      maxHeap.insert(item);
+    }
+  }
+
+  console.log(result.join("\n"));
+};
