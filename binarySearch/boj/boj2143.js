@@ -43,7 +43,7 @@ const binaryRightSearch = (arr, target) => {
     else right = mid;
   }
 
-  return right - 1;
+  return right;
 };
 
 const solution = (T, n, nArr, m, mArr) => {
@@ -72,7 +72,7 @@ const solution = (T, n, nArr, m, mArr) => {
   nSum.sort((a, b) => a - b);
   mSum.sort((a, b) => a - b);
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < nSum.length; i++) {
     let left = binaryLeftSearch(mSum, T - nSum[i]);
     let right = binaryRightSearch(mSum, T - nSum[i]);
 
