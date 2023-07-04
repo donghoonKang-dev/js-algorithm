@@ -54,8 +54,8 @@ const solution = (M, N, K, cabbages) => {
     for (let j = 0; j < N; j++) {
       if (field[j][i] === 1) {
         dfs(i, j);
+        count += 1;
       }
-      count += 1;
     }
   }
 
